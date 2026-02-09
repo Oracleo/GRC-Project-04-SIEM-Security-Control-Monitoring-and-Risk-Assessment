@@ -4,7 +4,7 @@
 [![MITRE ATT&CK](https://img.shields.io/badge/MITRE-ATT%26CK-red)](https://attack.mitre.org/)
 [![Status](https://img.shields.io/badge/Status-Complete-success)]()
 
-A hands-on SOC project demonstrating real-time brute-force attack detection using Splunk SIEM, Windows Event Logs, and incident response workflow.
+A hands-on Security Operations Center project demonstrating real-time brute-force attack detection using Splunk SIEM, Windows Event Logs, and professional incident response workflow.
 
 ---
 
@@ -12,350 +12,365 @@ A hands-on SOC project demonstrating real-time brute-force attack detection usin
 
 - [Overview](#overview)
 - [Project Objectives](#project-objectives)
-- [Architecture](#architecture)
+- [Lab Architecture](#lab-architecture)
 - [Technologies Used](#technologies-used)
-- [Setup Guide](#setup-guide)
-- [Detection Method](#detection-method)
+- [Implementation Details](#implementation-details)
 - [Key Findings](#key-findings)
 - [MITRE ATT&CK Mapping](#mitre-attck-mapping)
-- [Deliverables](#deliverables)
 - [Screenshots](#screenshots)
-- [Lessons Learned](#lessons-learned)
-- [Future Enhancements](#future-enhancements)
+- [Deliverables](#deliverables)
+- [Skills Demonstrated](#skills-demonstrated)
 - [Author](#author)
 
 ---
 
 ## 🎯 Overview
 
-This project simulates a real-world SOC (Security Operations Center) environment where a brute-force authentication attack is detected, investigated, and documented using industry-standard tools and methodologies. The lab demonstrates practical skills in SIEM deployment, log analysis, threat detection, and incident response.
+This project simulates a real-world Security Operations Center environment where a brute-force authentication attack is detected, investigated, and documented using industry-standard tools and methodologies. The lab demonstrates practical competencies in SIEM deployment, log analysis, threat detection, alert configuration, and incident response documentation.
 
 **Incident Summary:**
 - **Attack Type:** Brute-Force Authentication Attack
-- **Target:** Windows 10 user account (`testuser`)
-- **Detection Time:** Real-time (< 1 minute)
-- **Failed Attempts:** 5+ within short timespan
-- **Status:** Successfully detected and documented
+- **Target Accounts:** Dr.Nee (admin), testuser
+- **Detection Time:** Real-time (under 60 seconds)
+- **Failed Attempts:** 4 per account (8 total)
+- **Outcome:** Successfully detected and documented; no unauthorized access achieved
 
 ---
 
 ## 🎓 Project Objectives
 
-1. **Deploy SIEM Infrastructure:** Set up Splunk Enterprise on Kali Linux for centralized log monitoring
-2. **Configure Log Collection:** Forward Windows Security Event Logs to Splunk using Universal Forwarder
-3. **Simulate Attack:** Generate brute-force login attempts to trigger security events
-4. **Detect Threats:** Create SPL queries to identify suspicious authentication patterns
-5. **Create Alerts:** Configure real-time alerting for brute-force detection
-6. **Document Incident:** Follow SOC workflow to investigate and document findings
-7. **Map to Framework:** Align attack with MITRE ATT&CK framework
+This project was designed to develop and demonstrate the following capabilities:
+
+1. Deploy and configure Splunk Enterprise SIEM platform on Linux infrastructure for centralized security monitoring
+2. Implement log forwarding architecture using Splunk Universal Forwarder to collect Windows Security Event Logs
+3. Develop detection logic using Search Processing Language to identify suspicious authentication patterns
+4. Configure automated real-time alerting based on threshold-based detection rules
+5. Execute incident response workflow including identification, analysis, documentation, and remediation recommendations
+6. Map detected threats to the MITRE ATT&CK framework for standardized threat classification
+7. Produce professional incident documentation suitable for SOC operational use
 
 ---
 
-## 🏗️ Architecture
+## 🏗️ Lab Architecture
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                    SOC Lab Architecture                      │
-└─────────────────────────────────────────────────────────────┘
+The lab environment consists of two primary components working in a bridged network configuration to simulate enterprise SOC operations:
 
-Windows 10 Host (Victim)                    Kali Linux VM (SIEM)
-IP: 10.232.194.141                         IP: 10.232.194.7
-┌──────────────────┐                       ┌──────────────────┐
-│                  │                       │                  │
-│  Windows User    │                       │  Splunk          │
-│   Account:       │                       │  Enterprise      │
-│   - testuser     │                       │  - Port 8000     │
-│                  │                       │  - Port 9997     │
-│  Security Logs   │                       │                  │
-│  (EventID 4625)  │                       │  Detection       │
-│        │         │                       │  & Alerting      │
-│        ▼         │                       │       ▲          │
-│  Universal       │    Log Forwarding     │       │          │
-│  Forwarder   ────┼──────────────────────►│   Receives       │
-│  (Port 9997)     │   TCP Connection      │   Logs           │
-│                  │                       │                  │
-└──────────────────┘                       └──────────────────┘
-         ▲                                          │
-         │                                          │
-         │ Brute-Force Attack                       │
-         │ (Failed Login Attempts)                  │
-         │                                          ▼
-    ┌────┴────┐                            ┌────────────────┐
-    │ Attacker│                            │ SOC Analyst    │
-    │ (Local) │                            │ Investigation  │
-    └─────────┘                            └────────────────┘
-```
+**Infrastructure Components:**
 
-**Network Configuration:**
-- Both systems on bridged network (same subnet)
-- Splunk receiving port: 9997 (configured)
-- Splunk web interface: http://10.232.194.7:8000
+**SIEM Platform (Kali Linux VM)**
+- Role: Security monitoring and analysis
+- IP Address: 10.232.194.7
+- Splunk Enterprise 10.2.0
+- Web Interface Port: 8000
+- Receiving Port: 9997
+
+**Target System (Windows 10 Host)**
+- Role: Log source and attack target
+- IP Address: 10.232.194.141
+- Splunk Universal Forwarder 10.2.0
+- Windows Security Event Log forwarding enabled
+
+**Data Flow:**
+
+The architecture implements a standard SIEM log collection pipeline. Windows Security events are captured locally on the Windows 10 system, particularly focusing on Event ID 4625 (failed logon attempts). The Splunk Universal Forwarder running on the Windows host collects these events and forwards them over TCP port 9997 to the Splunk Enterprise instance on the Kali Linux system. The SIEM platform then indexes these events, enabling real-time search, correlation, and alerting capabilities. When the detection query identifies failed login patterns exceeding the configured threshold, automated alerts are triggered and logged for SOC analyst review.
 
 ---
 
 ## 🛠️ Technologies Used
 
-| Technology | Purpose | Version |
-|------------|---------|---------|
-| **Splunk Enterprise** | SIEM platform for log collection and analysis | 10.2.0 |
-| **Splunk Universal Forwarder** | Lightweight agent for log forwarding | 10.2.0 |
-| **Kali Linux** | SIEM hosting platform | 2026 (VirtualBox) |
-| **Windows 10** | Target system generating security events | Build 19045 |
-| **VirtualBox** | Virtualization platform | Latest |
-| **SPL** | Search Processing Language for queries | - |
-| **Windows Event Viewer** | Native log viewing tool | - |
+**Security Information and Event Management:**
+- Splunk Enterprise 10.2.0 for log aggregation, correlation, and analysis
+- Splunk Universal Forwarder 10.2.0 for lightweight log collection and forwarding
+- Search Processing Language for query development and threat detection
+
+**Operating Systems and Virtualization:**
+- Kali Linux (SIEM hosting platform)
+- Windows 10 Build 19045 (target system and log source)
+- Oracle VirtualBox for virtualization infrastructure
+
+**Security Frameworks and Standards:**
+- MITRE ATT&CK Framework for threat classification
+- Windows Event Log architecture for security monitoring
+- Standard SOC incident response methodology
 
 ---
 
-## 📖 Setup Guide
+## 📖 Implementation Details
 
-### Prerequisites
+### Phase 1: SIEM Infrastructure Deployment
 
-- VirtualBox installed
-- Kali Linux VM (minimum 4GB RAM)
-- Windows 10 (host or VM)
-- Splunk account (free) - [https://www.splunk.com](https://www.splunk.com)
+The Splunk Enterprise platform was deployed on Kali Linux following security best practices. The installation process included verifying system prerequisites, configuring the receiving port for log ingestion, and establishing administrative access controls. The SIEM was configured to listen on port 9997 for incoming log streams from remote forwarders.
 
-### Step 1: Install Splunk Enterprise on Kali
+### Phase 2: Log Collection Configuration
 
-```bash
-# Download Splunk Enterprise for Linux (.deb)
-cd ~/Downloads
+Splunk Universal Forwarder was installed on the Windows 10 target system and configured to forward Windows Security Event Logs to the central SIEM. The forwarder was pointed to the Kali SIEM instance at IP address 10.232.194.7 on port 9997. Input configuration was established to monitor the Windows Security log channel, with events being indexed in the main index for analysis.
 
-# Install Splunk
-sudo dpkg -i splunk-10.2.0-*.deb
+### Phase 3: Windows Auditing Enablement
 
-# Start Splunk and accept license
-sudo /opt/splunk/bin/splunk start --accept-license
+Windows audit policies were configured to ensure comprehensive logging of authentication events. The Logon audit subcategory was enabled for both success and failure events using the auditpol command-line utility. This configuration ensures that all authentication attempts, whether successful or failed, are captured in the Security event log.
 
-# Create admin account when prompted
-# Username: admin
-# Password: <your-password>
-```
+### Phase 4: Attack Simulation
 
-### Step 2: Configure Splunk Receiving Port
+A test user account was created on the Windows system to serve as the target for simulated brute-force activity. Multiple failed authentication attempts were generated using the runas command with incorrect credentials. This produced authentic Event ID 4625 (failed logon) events in the Windows Security log, which were then forwarded to Splunk for detection and analysis.
 
-```bash
-# Access Splunk web interface
-# Open browser: http://127.0.0.1:8000
+### Phase 5: Detection Logic Development
 
-# Navigate to: Settings > Forwarding and receiving
-# Click: Configure receiving > Add new
-# Port: 9997
-# Save
-```
+A detection query was developed using Splunk's Search Processing Language to identify potential brute-force attacks. The query searches for Event ID 4625, aggregates failed login attempts by account name, filters for accounts with three or more failures (indicating potential attack activity), and sorts results to prioritize accounts with the highest failure counts. This threshold-based approach balances detection sensitivity with false positive reduction.
 
-### Step 3: Network Configuration
+### Phase 6: Alert Configuration
 
-```bash
-# Configure Kali VM network adapter to Bridged mode
-# In VirtualBox: Settings > Network > Adapter 1 > Bridged Adapter
-
-# Restart Kali VM and verify IP
-ip addr show
-
-# Note the IP address (e.g., 10.232.194.7)
-```
-
-### Step 4: Install Splunk Universal Forwarder on Windows
-
-```cmd
-# Download Universal Forwarder for Windows
-# Install with default settings
-
-# Open Command Prompt as Administrator
-cd "C:\Program Files\SplunkUniversalForwarder\bin"
-
-# Start forwarder
-splunk.exe start --accept-license
-
-# Create admin account (e.g., drnee)
-
-# Add forward server (use Kali IP)
-splunk.exe add forward-server 10.232.194.7:9997
-```
-
-### Step 5: Configure Windows Event Log Collection
-
-```cmd
-# Navigate to local config directory
-cd "C:\Program Files\SplunkUniversalForwarder\etc\system\local"
-
-# Edit inputs.conf (create if not exists)
-notepad inputs.conf
-
-# Add these lines:
-[WinEventLog://Security]
-disabled = 0
-index = main
-
-# Save and restart forwarder
-cd "C:\Program Files\SplunkUniversalForwarder\bin"
-splunk.exe restart
-```
-
-### Step 6: Enable Windows Auditing
-
-```cmd
-# Enable logon auditing
-auditpol /set /subcategory:"Logon" /success:enable /failure:enable
-```
-
-### Step 7: Verify Log Collection
-
-```
-# In Splunk web interface > Search & Reporting
-# Run this query:
-
-index=main sourcetype=WinEventLog:Security
-
-# You should see Windows Security events flowing in
-```
-
----
-
-## 🔍 Detection Method
-
-### Detection Query (SPL)
-
-```spl
-index=main sourcetype=WinEventLog:Security EventCode=4625
-| stats count by Account_Name
-| where count >= 3
-| sort - count
-```
-
-**Query Breakdown:**
-- `EventCode=4625` - Failed logon attempts
-- `stats count by Account_Name` - Count failures per user
-- `where count >= 3` - Filter users with 3+ failures (brute-force threshold)
-- `sort - count` - Show highest failure counts first
-
-### Alert Configuration
-
-**Alert Name:** Brute Force Detection - Failed Login Attempts
-
-**Settings:**
-- **Type:** Real-time
-- **Trigger Condition:** Per-Result
-- **Threshold:** 3 or more failed login attempts
-- **Action:** Log Event with user details
-
-**Alert Message:**
-```
-Brute Force Alert: User $result.Account_Name$ has $result.count$ failed login attempts
-```
+A real-time alert was configured in Splunk to provide automated detection of brute-force activity. The alert executes continuously, triggering when any user account accumulates three or more failed login attempts. The per-result trigger configuration ensures that each affected account generates an individual alert. The alert action logs the event with dynamic field substitution, recording the account name and failure count for SOC analyst review.
 
 ---
 
 ## 📊 Key Findings
 
-### Attack Details
+### Detection Results
 
-| Attribute | Value |
-|-----------|-------|
-| **Incident ID** | INC-2026-0206-001 |
-| **Date & Time** | 6th February 2026, 13:47 IST |
-| **Severity** | Medium |
-| **Attack Type** | Brute-Force Authentication |
-| **Target System** | Windows 10 (10.232.194.141) |
-| **Targeted Account** | testuser |
-| **Failed Attempts** | 5+ |
-| **Success Rate** | 0% (All attempts blocked) |
-| **Event ID** | 4625 (Failed Logon) |
-| **Logon Type** | Type 2 (Interactive) |
+The SIEM successfully identified brute-force authentication attempts against two user accounts within the monitored environment. The detection query revealed the following:
 
-### Investigation Summary
+**Account: Dr.Nee**
+- Failed Login Attempts: 4
+- Status: Above threshold (≥3)
+- Classification: Potential brute-force activity detected
 
-- **Detection Time:** < 1 minute (real-time alert)
-- **Failure Reason:** "Unknown user name or bad password"
-- **Source Computer:** NATIONALIST
-- **Impact:** None - all attempts failed
-- **Status:** Detected and documented
+**Account: testuser**
+- Failed Login Attempts: 4  
+- Status: Above threshold (≥3)
+- Classification: Potential brute-force activity detected
+
+### Technical Analysis
+
+All detected events were classified as Event ID 4625 (An account failed to log on), indicating failed authentication attempts. The failure reason in all cases was "Unknown user name or bad password," consistent with credential guessing behavior. The logon type was Interactive (Type 2), indicating attempts to log on directly at the console. The source computer was identified as NATIONALIST in all events.
+
+### Security Impact Assessment
+
+The attack attempts were unsuccessful. No unauthorized access was achieved, and all targeted accounts remained secure throughout the incident. The detection mechanisms functioned as designed, identifying the suspicious activity in real-time and generating appropriate alerts for investigation.
 
 ---
 
 ## 🎯 MITRE ATT&CK Mapping
 
-| MITRE Component | Details |
-|-----------------|---------|
-| **Tactic** | Credential Access (TA0006) |
-| **Technique** | Brute Force (T1110) |
-| **Sub-technique** | Password Guessing (T1110.001) |
-| **Detection** | Monitor authentication logs for multiple failed attempts |
+The detected attack activity has been mapped to the MITRE ATT&CK framework for standardized threat classification and communication:
 
-**Reference:** [MITRE ATT&CK - Brute Force](https://attack.mitre.org/techniques/T1110/)
+**Tactic:** Credential Access (TA0006)  
+Adversaries attempt to obtain valid credentials to gain access to systems and networks.
 
----
+**Technique:** Brute Force (T1110)  
+Adversaries attempt to gain access to accounts by systematically guessing passwords through repeated authentication attempts.
 
-## 📦 Deliverables
+**Sub-technique:** Password Guessing (T1110.001)  
+Without prior knowledge of legitimate credentials, adversaries guess passwords to gain access to accounts.
 
-This repository contains:
+**Detection Method:** Monitor authentication logs for multiple failed login attempts, especially those occurring in rapid succession or targeting multiple accounts. Implement threshold-based alerting for accounts exceeding normal failed authentication baselines.
 
-1. **Incident Report** - Professional Word document with findings (`docs/SOC_Brute_Force_Incident_Report.docx`)
-2. **Detection Queries** - SPL queries used for detection (`queries/detection_query.txt`)
-3. **Screenshots** - Visual evidence of setup and detection (`screenshots/`)
-4. **Setup Guide** - Detailed installation instructions (`setup/setup_guide.md`)
-5. **README** - Complete project documentation (this file)
+Reference: https://attack.mitre.org/techniques/T1110/
 
 ---
 
 ## 📸 Screenshots
 
-### Splunk Login Page
-![Splunk Login](screenshots/splunk_login.png)
+Visual documentation of the complete SOC lab implementation and detection workflow.
 
-### Failed Login Events Detection
-![Failed Events](screenshots/failed_login_events.png)
+### Lab Infrastructure Setup
 
-### Detection Query Results
-![Search Results](screenshots/splunk_search_results.png)
+#### Splunk Enterprise Startup
+![Splunk Startup Terminal](screenshots/00Splunk_Start_Terminal.PNG)
+
+The Splunk Enterprise service successfully starts on the Kali Linux system, completing all prerequisite checks including port availability verification (8000, 8089, 8065, 8191), configuration validation, and index integrity checks. The startup sequence confirms that new certificates have been generated and all installed files are intact. The web interface becomes available at http://kali:8000.
+
+#### Splunk Login Interface
+![Splunk Login Page](screenshots/01_splunk_login_page.png)
+
+The Splunk Enterprise web interface login page, accessible via the Kali Linux browser at http://kali:8000. This interface provides secure access to the SIEM platform using administrator credentials established during initial configuration.
+
+#### Splunk Home Dashboard
+![Splunk Home Dashboard](screenshots/02_splunk_home_dashboard_png.PNG)
+
+The Splunk home dashboard displays after successful authentication, showing the main navigation interface including Search & Reporting, Analytics, Datasets, Reports, Alerts, Dashboards, and Modules. The left sidebar provides access to installed applications including Audit Trail, Data Management, and other Splunk components.
+
+#### Network Configuration
+![Kali Network Configuration](screenshots/03_kali_network_ip.png)
+
+The Kali Linux network configuration showing the eth0 interface with IP address 10.232.194.7/24 in bridged adapter mode. This network configuration enables direct communication between the SIEM platform and the Windows target system on the same subnet.
+
+#### Connectivity Verification
+![Windows to Kali Connectivity](screenshots/04_windows_ping_kali.png)
+
+Successful ICMP connectivity test from the Windows 10 host to the Kali Linux SIEM at IP address 10.232.194.7. The ping results show four successful replies with minimal latency (1-2ms) and zero packet loss, confirming proper network configuration for log forwarding.
+
+---
+
+### Log Collection Configuration
+
+#### Data Input Configuration
+![Data Inputs Page](screenshots/05_data_inputs_page.png)
+
+The Splunk Settings page displaying available data input types including Files & Directories, HTTP Event Collector, TCP, UDP, and Scripts. The Forwarding and receiving option is visible, providing access to configure log reception from remote Universal Forwarders.
+
+#### Receiving Port Configuration
+![Receiving Port 9997](screenshots/06_receiving_port_9997.png)
+
+The configured receiving port shows port 9997 in enabled status, ready to accept incoming log streams from Splunk Universal Forwarders. This is the standard port for Splunk-to-Splunk forwarding in enterprise deployments.
+
+#### Log Ingestion Verification
+![Windows Logs in Splunk](screenshots/07_windows_logs_in_splunk.png)
+
+Search results confirming successful ingestion of Windows Security Event Logs into Splunk. The query "index=main sourcetype=WinEventLog:Security" returns 978 events collected from the Windows system, demonstrating that the log forwarding pipeline is operational and events are being indexed in real-time.
+
+---
+
+### Attack Simulation
+
+#### Test Account Creation
+![Test User Created](screenshots/08_test_user_created.png)
+
+Windows Command Prompt showing successful creation of the test user account using the command "net user testuser Test@123 /add". This account serves as one of the targets for simulated brute-force authentication attempts.
+
+#### Failed Authentication Attempts
+![Failed Login Attempts](screenshots/09_failed_login_attempts.png)
+
+Windows Command Prompt displaying multiple failed authentication attempts using the runas command. Each attempt with an incorrect password generates error 1326 ("The user name or password is incorrect"), creating Event ID 4625 entries in the Windows Security log that are forwarded to Splunk for detection.
+
+---
+
+### Detection and Analysis
+
+#### Failed Logon Event Search
+![Event ID 4625 Search](screenshots/10_event_4625_search.png)
+
+Splunk search results filtering for Event ID 4625 (failed logon attempts). The search returns 4 events within the specified timeframe, with the timeline visualization showing a concentrated spike of activity indicating the simulated attack period.
+
+#### Event Detail Analysis
+![Event Details Expanded](screenshots/11_event_details_expanded.png)
+
+Detailed view of a single Event ID 4625 event showing all forensically relevant fields. Key details include Account Name (testuser), Failure Reason ("Unknown user name or bad password"), Logon Type (2 - Interactive), Computer Name (NATIONALIST), and authentication failure specifics. The expanded view provides complete event context for incident investigation.
+
+#### Brute-Force Detection Query Results
+![Detection Query Results](screenshots/12_detection_query_results.png)
+
+Results of the brute-force detection query using the Statistics tab view. The query aggregates failed login attempts by account name and filters for accounts with three or more failures. Two accounts are identified: Dr.Nee with 4 failed attempts and testuser with 4 failed attempts, both exceeding the detection threshold and indicating potential brute-force activity.
+
+#### Visual Detection Analysis
+![Detection Visualization](screenshots/13_detection_visualization.png)
+
+Column chart visualization of the detection query results showing failed login attempt counts by account. The visualization clearly displays both Dr.Nee and testuser with equal failure counts of 4, providing immediate visual confirmation of the brute-force pattern affecting multiple accounts.
+
+---
 
 ### Alert Configuration
-![Alert Setup](screenshots/alert_configuration.png)
+
+#### Alert Creation Dialog
+![Create Alert Dialog](screenshots/14_create_alert_dialog.png)
+
+The "Save As Alert" configuration interface showing the initial alert settings. The alert is titled "Brute Force Detection - Failed Login Attempts" with Real-time alert type selected for continuous monitoring. The Trigger Condition is set to Per-Result, meaning the alert will fire once for each user account detected with excessive failed login attempts.
+
+#### Alert Action Configuration
+![Alert Trigger Configuration](screenshots/15_alert_trigger_config.png)
+
+The Trigger Actions section of the alert configuration showing the Log Event action. The event text is configured with dynamic field substitution: "Brute Force Alert: User $result.Account_Name$ has $result.count$ failed login attempts". This creates informative log entries that include the specific account name and failure count for each triggered alert.
+
+#### Alert Save Confirmation
+![Alert Saved Confirmation](screenshots/16_alert_saved_confirmation.png)
+
+Confirmation dialog indicating successful alert creation. The system displays a warning that the scheduled search will not run after the Splunk Enterprise Trial License expires, along with options to view the alert or continue editing its configuration.
+
+#### Alert Status Dashboard
+![Alert Dashboard](screenshots/17_alert_dashboard.png)
+
+The alert details page showing the configured brute-force detection alert in enabled status. Key configuration details are displayed including: Enabled (Yes), App (search), Permissions (Private, owned by admin), Modified date (Feb 6, 2026 2:01:03 PM), Alert Type (Real-time), Trigger Condition (Per-Result), and Actions (1 Action - Log Event). The status "There are no fired events for this alert" is expected as the alert monitors for new events going forward.
 
 ---
 
-## 💡 Lessons Learned
+## 📦 Deliverables
 
-### Technical Skills Gained
+This repository provides comprehensive documentation and evidence of the SOC lab implementation:
 
-✅ **SIEM Deployment:** Hands-on experience with Splunk Enterprise installation and configuration  
-✅ **Log Forwarding:** Configured Splunk Universal Forwarder for centralized log collection  
-✅ **SPL Queries:** Developed Search Processing Language queries for threat detection  
-✅ **Windows Event Logs:** Deep understanding of Event ID 4625 and authentication logging  
-✅ **Alert Creation:** Built real-time alerts with custom thresholds  
-✅ **Incident Response:** Followed SOC workflow from detection to documentation  
-✅ **MITRE ATT&CK:** Mapped real attacks to industry-standard framework  
+**Documentation:**
+- README.md: Complete project overview, methodology, and findings
+- SOC_Brute_Force_Incident_Report.docx: Professional incident report following SOC documentation standards
 
-### Challenges Faced
+**Technical Artifacts:**
+- detection_query.txt: Splunk SPL queries with detailed explanations
+- setup_guide.md: Step-by-step implementation instructions
 
-**Challenge 1: Network Connectivity**
-- **Issue:** Initial NAT networking prevented Windows-to-Kali communication
-- **Solution:** Changed VirtualBox network adapter to Bridged mode
+**Visual Evidence:**
+- screenshots/: Complete collection of 18 screenshots documenting the entire workflow from infrastructure setup through alert configuration
 
-**Challenge 2: Log Forwarding Configuration**
-- **Issue:** Universal Forwarder not sending logs initially
-- **Solution:** Manually edited `inputs.conf` and restarted forwarder service
-
-**Challenge 3: Detection Query Optimization**
-- **Issue:** Initial query returned too many results
-- **Solution:** Added threshold filter (`where count >= 3`) to reduce false positives
+**Configuration Examples:**
+- Splunk receiving port configuration (9997)
+- Universal Forwarder setup and forwarding configuration
+- Windows audit policy configuration
+- Real-time alert configuration with automated actions
 
 ---
 
-## 🚀 Future Enhancements
+## 💡 Skills Demonstrated
 
-Potential improvements for this project:
+This project demonstrates practical competencies required for Security Operations Center analyst roles:
 
-1. **Automated Response:** Implement automatic account lockout after threshold breach
-2. **Geolocation Analysis:** Add IP geolocation lookup for source identification
-3. **Dashboard Creation:** Build Splunk dashboard with visualizations (charts, graphs, heatmaps)
-4. **Multiple Attack Types:** Expand to detect other attacks (privilege escalation, lateral movement)
-5. **Email Alerting:** Configure email notifications for critical alerts
-6. **Threat Intelligence Integration:** Integrate with threat intel feeds (AbuseIPDB, VirusTotal)
-7. **Correlation Rules:** Create multi-stage detection rules (e.g., failed login → successful login)
-8. **Linux Log Analysis:** Add SSH brute-force detection from Linux auth logs
+**SIEM Operations:**
+- Splunk Enterprise deployment and configuration on Linux infrastructure
+- Log source configuration and centralized log collection architecture
+- Search Processing Language query development for threat detection
+- Dashboard and visualization creation for security monitoring
+- Alert configuration with automated response actions
+
+**Security Monitoring:**
+- Windows Security Event Log analysis and correlation
+- Authentication failure pattern recognition
+- Threshold-based anomaly detection
+- Real-time threat identification and alerting
+
+**Incident Response:**
+- Structured incident investigation methodology
+- Evidence collection and preservation
+- Impact assessment and severity classification
+- Professional incident documentation and reporting
+- Remediation recommendation development
+
+**Technical Proficiency:**
+- Linux system administration (Kali)
+- Windows security configuration and audit policy management
+- Network configuration and troubleshooting (bridged networking)
+- Log forwarding architecture implementation
+- Security framework alignment (MITRE ATT&CK)
+
+**Professional Communication:**
+- Technical documentation writing
+- Security findings presentation
+- Stakeholder-appropriate reporting
+- Evidence-based analysis and recommendations
+
+---
+
+## 📝 Future Enhancements
+
+Potential expansions to this project include:
+
+**Enhanced Detection Capabilities:**
+- Implement correlation rules for distributed brute-force attacks across multiple source IPs
+- Develop temporal analysis to identify slow brute-force attempts
+- Create detection logic for successful authentication following failed attempts (potential compromise indicator)
+- Build automated enrichment using threat intelligence feeds
+
+**Automated Response:**
+- Implement account lockout automation via scripted alert actions
+- Configure email notifications to security team on alert trigger
+- Integrate with SOAR platform for orchestrated response workflows
+- Develop automated incident ticket creation in ticketing system
+
+**Visualization and Reporting:**
+- Create executive dashboard with key performance indicators
+- Build geolocation analysis for authentication attempts
+- Develop trending analysis for authentication failures over time
+- Implement automated daily security summary reports
+
+**Expanded Monitoring:**
+- Add Linux SSH brute-force detection from auth.log
+- Implement privilege escalation detection
+- Monitor for lateral movement indicators
+- Develop file integrity monitoring alerts
 
 ---
 
@@ -365,30 +380,40 @@ Potential improvements for this project:
 M.Tech Information Security (Pursuing)  
 West Bengal University of Technology (MAKAUT)
 
-- 📧 Email: dr.niladribiswas@gmail.com
-- 💼 LinkedIn: [linkedin.com/in/dr-niladri-biswas](https://linkedin.com/in/dr-niladri-biswas)
-- 🐙 GitHub: [github.com/oracleo](https://github.com/oracleo)
-- 🎯 TryHackMe: [tryhackme.com/p/dr.nee](https://tryhackme.com/p/dr.nee)
+**Professional Links:**
+- Email: dr.niladribiswas@gmail.com
+- LinkedIn: [linkedin.com/in/dr-niladri-biswas](https://linkedin.com/in/dr-niladri-biswas)
+- GitHub: [github.com/oracleo](https://github.com/oracleo)
+- TryHackMe: [tryhackme.com/p/dr.nee](https://tryhackme.com/p/dr.nee)
+
+**Certifications:**
+- ISC2 Certified in Cybersecurity (CC)
+- Cisco Ethical Hacker
+- TryHackMe PreSecurity Pathway
 
 ---
 
 ## 📝 License
 
-This project is for educational purposes only. Do not use these techniques on systems you do not own or have explicit permission to test.
+This project is created for educational and portfolio purposes. The methodologies and techniques demonstrated should only be used in authorized laboratory environments or with explicit permission on production systems.
 
 ---
 
 ## 🙏 Acknowledgments
 
-- Splunk Community for documentation and resources
-- MITRE ATT&CK for the threat framework
-- TryHackMe for SOC training pathway
-- Security community for best practices
+- Splunk Community for comprehensive documentation and resources
+- MITRE Corporation for the ATT&CK framework
+- TryHackMe for SOC analyst training pathways
+- Information security community for best practices and guidance
 
 ---
 
-**⭐ If you found this project helpful, please star the repository!**
+**Project Completion Date:** February 6, 2026
+
+**Last Updated:** February 9, 2026
 
 ---
 
-*Last Updated: 6th February 2026*
+⭐ **If you found this project valuable, please consider starring the repository!**
+
+---
