@@ -175,7 +175,7 @@ Visual documentation of the complete SOC lab implementation and detection workfl
 ### Lab Infrastructure Setup
 
 #### Splunk Enterprise Startup
-![Splunk Startup Terminal](screenshots/00Splunk_Start_Terminal.PNG)
+![Splunk Startup Terminal](screenshots/00Splunk_Start_Terminal.png)
 
 The Splunk Enterprise service successfully starts on the Kali Linux system, completing all prerequisite checks including port availability verification (8000, 8089, 8065, 8191), configuration validation, and index integrity checks. The startup sequence confirms that new certificates have been generated and all installed files are intact. The web interface becomes available at http://kali:8000.
 
@@ -185,7 +185,7 @@ The Splunk Enterprise service successfully starts on the Kali Linux system, comp
 The Splunk Enterprise web interface login page, accessible via the Kali Linux browser at http://kali:8000. This interface provides secure access to the SIEM platform using administrator credentials established during initial configuration.
 
 #### Splunk Home Dashboard
-![Splunk Home Dashboard](screenshots/02_splunk_home_dashboard_png.PNG)
+![Splunk Home Dashboard](screenshots/02_splunk_home_dashboard.png)
 
 The Splunk home dashboard displays after successful authentication, showing the main navigation interface including Search & Reporting, Analytics, Datasets, Reports, Alerts, Dashboards, and Modules. The left sidebar provides access to installed applications including Audit Trail, Data Management, and other Splunk components.
 
