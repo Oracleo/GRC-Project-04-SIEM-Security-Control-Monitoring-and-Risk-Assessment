@@ -1,4 +1,4 @@
-# Mini SOC Lab – Brute-Force Detection & Incident Response
+# Mini SOC Lab: Brute-Force Detection & Incident Response
 
 [![Splunk](https://img.shields.io/badge/Splunk-Enterprise-green)](https://www.splunk.com/)
 [![MITRE ATT&CK](https://img.shields.io/badge/MITRE-ATT%26CK-red)](https://attack.mitre.org/)
