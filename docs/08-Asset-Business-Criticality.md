@@ -18,4 +18,4 @@ In a professional GRC environment, a failed login attempt on a generic desktop i
 | **Delayed Incident Response (Alert not routed)** | Attacker has extended window of opportunity (minutes to hours). | Violates NIST RS.AN-1 (Investigations). | Irreparable data loss if attackers move laterally before the SOC responds. |
 
 ## 8.3 Conclusion on Priority Scoring
-The lack of account lockout and MFA is escalated to a **Critical P1** because this asset sits at the gateway to the organization's financial and HR data. The priority matrix in `03-Risk-Register.md` is driven by the high business impact of a privileged account compromise on this specific host.
+The lack of account lockout and MFA is escalated to a **Critical P1** because this asset sits at the gateway to the organization's financial and HR data. The priority matrix in `05-Risk-Register.md` is driven by the high business impact of a privileged account compromise on this specific host.
