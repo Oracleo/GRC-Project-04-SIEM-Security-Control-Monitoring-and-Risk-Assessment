@@ -30,12 +30,16 @@ Navigate this repository to view the formal GRC artifacts:
 | Document | Description |
 |:---|:---|
 | **`docs/01-Executive-Summary.md`** | A non-technical summary for senior leadership detailing the SIEM implementation and the successful detection of a brute-force attempt. |
-| **`docs/02-Scope-Methodology.md`** | The formal Terms of Reference for the SIEM lab, covering network topology, log ingestion, and SPL development. |
-| **`docs/03-Risk-Register.md`** | A formalized risk register entry for the Credential Access vulnerability, scoring the gap between detective and preventive controls. |
-| **`docs/04-Remediation-Tracker.md`** | A project management artifact tracking the implementation of MFA and Account Lockouts, complete with Cost-Benefit Analysis. |
-| **`docs/05-Compliance-Gap-Analysis.md`** | A control-by-control analysis mapping the monitoring setup to ISO 27001 Annex A, NIST CSF, and PCI DSS. |
-| **`docs/06-Asset-Business-Criticality.md`** | Contextualizing the target Windows endpoint as a sensitive HR/Payroll server. |
-| **`docs/07-MITRE-ATTACK-Mapping.md`** | Detailed mapping of the attack to T1110.001 and the SIEM's detection logic. |
+| **`docs/02-Executive-Dashboard.md`** | A management-level KPI dashboard tracking monitoring status, control posture, and strategic recommendations. |
+| **`docs/03-Scope-Methodology.md`** | The formal Terms of Reference for the SIEM lab, covering network topology, log ingestion, and SPL development. |
+| **`docs/04-Assumed-Business-Context.md`** | Contextualizing the organization as a financial services firm to drive accurate risk scoring. |
+| **`docs/05-Risk-Register.md`** | A formalized risk register entry for the Credential Access vulnerability, scoring the gap between detective and preventive controls. |
+| **`docs/06-Remediation-Tracker.md`** | A project management artifact tracking the implementation of MFA and Account Lockouts, complete with Cost-Benefit Analysis. |
+| **`docs/07-Compliance-Gap-Analysis.md`** | A control-by-control analysis mapping the monitoring setup to ISO 27001 Annex A, NIST CSF, and PCI DSS. |
+| **`docs/08-Asset-Business-Criticality.md`** | Contextualizing the target Windows endpoint as a sensitive Finance/HR server. |
+| **`docs/09-MITRE-ATTACK-Mapping.md`** | Detailed mapping of the attack to T1110.001 and the SIEM's detection logic. |
+| **`docs/10-Residual-Risk-Assessment.md`** | A post-remediation analysis evaluating the remaining risk after controls are implemented. |
+| **`docs/11-Lessons-Learned.md`** | A post-implementation review (PIR) documenting successes, challenges, and next iterations. |
 | **`artifacts/`** | Raw technical documentation, including the complete SPL `detection_query.md` and the `setup_guide.md` for replicating the lab. |
 | **`screenshots/`** | 18 annotated screenshots documenting the installation, log ingestion, and alert configuration. |
 
