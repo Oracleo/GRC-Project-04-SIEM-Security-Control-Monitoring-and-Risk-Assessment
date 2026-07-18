@@ -21,7 +21,7 @@ This document maps the identified security control implementation to specific re
 ## PCI DSS v4.0 Mappings
 *   **Requirement 10.2:** Audit trails for system components must be enabled and active. (Passed: Windows Security logs are forwarding).
 *   **Requirement 10.6:** Review logs and security events. (Passed: Splunk is actively searching).
-*   **Requirement 8.5:** The use of group, shared, or generic IDs must be prevented. (Not addressed: Accounts were tested individually, but the project does not test for shared account usage).
+*   **Requirement 8.2.2:** Ensure that user accounts are not shared or used by multiple users, and that all users have unique IDs. (Passed: Accounts were tested individually, but a full audit of shared accounts is required for full compliance).
 
 ## GDPR (General Data Protection Regulation) Implications
 If an employee's account is brute-forced successfully, it could lead to a data breach. Failure to implement MFA and account lockouts constitutes a failure of **Article 32 (Security of Processing)**, requiring the organization to implement appropriate technical measures to protect personal data.
