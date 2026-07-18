@@ -1,6 +1,6 @@
 # 10. Residual Risk Assessment & Post-Remediation Analysis
 
-Once a GRC analyst identifies vulnerabilities and recommends controls, the ultimate goal is to reduce risk to an **acceptable residual level** (within the organization's risk appetite). This document assesses the remaining risk *after* the recommended controls from `04-Remediation-Tracker.md` have been implemented.
+Once a GRC analyst identifies vulnerabilities and recommends controls, the ultimate goal is to reduce risk to an **acceptable residual level** (within the organization's risk appetite). This document assesses the remaining risk *after* the recommended controls from `06-Remediation-Tracker.md` have been implemented.
 
 ## 10.1 Risk Mitigation Status (Post-Implementation)
 
