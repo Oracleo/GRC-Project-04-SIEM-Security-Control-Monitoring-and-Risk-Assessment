@@ -1,4 +1,4 @@
-# 11. Lessons Learned & Continuous Improvement
+# 11. Lessons Learned
 
 This document serves as a **post-implementation review (PIR)** of the Splunk SIEM control monitoring lab. In a professional GRC environment, documenting lessons learned is essential for demonstrating a "Continuous Improvement" mindset required by ISO 27001 Clause 10.2.
 
