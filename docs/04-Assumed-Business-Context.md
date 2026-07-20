@@ -1,4 +1,4 @@
-# 4. Assumed Business Context & Corporate Profile
+# 4. Assumed Business Context
 
 In a professional GRC assessment, security controls are never implemented in a vacuum. They are driven by the organization's business goals, regulatory obligations, and operational structure. For this risk engagement, we project the following fictitious business context to accurately score risk and prioritize control recommendations.
 
