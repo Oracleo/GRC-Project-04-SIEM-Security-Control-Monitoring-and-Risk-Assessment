@@ -1,6 +1,6 @@
 # 1. Executive Summary
 
-*  **Date of Investigation:** February 6, 2026
+*  **Date of Investigation:** 2 January 2026
 *  **Conducted By:** Niladri Biswas
 *  **Assessment Type:** Security Control Monitoring Validation
 *  **Target Asset:** Organizational Windows Authentication Infrastructure
