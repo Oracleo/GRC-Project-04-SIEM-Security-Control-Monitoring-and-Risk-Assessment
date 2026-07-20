@@ -1,4 +1,4 @@
-# 8. Asset Business Criticality & Context Analysis
+# 8. Asset Business Criticality
 
 In a professional GRC environment, a failed login attempt on a generic desktop is viewed differently than one on a critical server. For this risk engagement, we contextualize the **Target Windows 10 Host (`NATIONALIST`)** as follows:
 
