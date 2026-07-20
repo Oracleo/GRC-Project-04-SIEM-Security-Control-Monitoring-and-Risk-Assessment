@@ -23,7 +23,7 @@ This project establishes a continuous compliance oversight framework—from depl
 
 ---
 
-## Repository Contents
+## Full Documentation Index (GRC Artifacts)
 
 Navigate this repository to view the formal GRC artifacts:
 
