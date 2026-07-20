@@ -43,7 +43,7 @@ Navigate this repository to view the formal GRC artifacts:
 | **`artifacts/`** | Raw technical documentation, including the complete SPL `detection_query.md` and the `setup_guide.md` for replicating the lab. |
 | **`screenshots/`** | 18 annotated screenshots documenting the installation, log ingestion, and alert configuration. |
 
-### Screenshots Index
+## Screenshots Index
 
 | # | Filename | Description |
 |---|---|---|
