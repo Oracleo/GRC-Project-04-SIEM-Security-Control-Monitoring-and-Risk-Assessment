@@ -11,7 +11,7 @@ This project establishes a continuous compliance oversight framework—from depl
 
 ---
 
-## Project at a Glance (For Recruiters & Hiring Managers)
+## Project at a Glance
 
 | Area | Details |
 |:---|:---|
